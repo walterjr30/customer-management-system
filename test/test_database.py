@@ -103,6 +103,32 @@ def test_update_customer_not_found(tmp_path):
     result = update_customer_city("naoexiste@email.com", "Cork", db_path)
     assert result is False
 
+def test_update_customer_city_only_affects_target(db_path):
+    insert_customer("Walter", "walter@email.com", "Dublin", db_path)
+    insert_customer("Maria", "maria@email.com", "Cork", db_path)
+    result_update_city = update_customer_city("walter@email.com", "Galway", db_path)
+    maria = find_customer_by_email("maria@email.com",db_path)
+    walter = find_customer_by_email("walter@email.com",db_path)
+    assert result_update_city is True
+    assert maria[3] == "Cork"
+    assert walter[3] == "Galway"
+
+
+def test_delete_customer_not_found(db_path):
+    result = delete_customer_by_email("naoexiste@email.com", db_path)
+    assert result is False
+
+def test_delete_customer_only_affects_target(db_path):
+    insert_customer("Walter", "walter@email.com", "Dublin", db_path)
+    insert_customer("Maria", "maria@email.com", "Cork", db_path)
+    result = delete_customer_by_email("walter@email.com", db_path)
+    walter = find_customer_by_email("walter@email.com", db_path)
+    maria = find_customer_by_email("maria@email.com", db_path)
+    assert result is True
+    assert walter is None
+    assert maria is not None
+
+    
 def test_delete_customer(tmp_path):
     db_path = tmp_path / "test_customers.db"
     create_database(db_path)
