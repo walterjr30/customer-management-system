@@ -1,54 +1,137 @@
-# Customer Management System
+# Sistema de Gerenciamento de Clientes
 
-[English](README.md) · **Português (Brasil)**
+[English](README.md) | [Português](README.pt-BR.md)
 
-Aplicação de terminal em Python para gerenciar cadastros de clientes em um banco de dados SQLite local. Permite cadastrar e listar clientes, buscá-los por e-mail, atualizar a cidade e excluir registros após confirmação.
+Sistema de gerenciamento de clientes desenvolvido em **Python, SQLite e Pytest**, com interface de linha de comando.
 
-## Executar a aplicação
+## Sobre o Projeto
 
-Instale o Python com suporte a SQLite. O projeto foi verificado com Python 3.14.7. Na pasta raiz do repositório, execute:
+Desenvolvi este projeto para aprimorar meus conhecimentos em Python e adquirir experiência prática em desenvolvimento de software.
 
-```sh
+A aplicação permite gerenciar cadastros de clientes por meio de um menu interativo, armazenando as informações em um banco de dados SQLite.
+
+Durante o desenvolvimento, pratiquei operações CRUD, consultas SQL, validação de dados, programação modular, tratamento de exceções e testes automatizados.
+
+Este projeto faz parte da minha transição profissional para a área de desenvolvimento de software.
+
+## Funcionalidades
+
+- Cadastrar novos clientes
+- Listar clientes cadastrados
+- Buscar clientes pelo e-mail
+- Atualizar a cidade de um cliente
+- Excluir clientes mediante confirmação
+- Validar os dados informados
+- Impedir cadastros com e-mails duplicados
+- Armazenar os dados permanentemente com SQLite
+- Executar testes automatizados com Pytest
+
+## Tecnologias Utilizadas
+
+- **Python** — Lógica da aplicação
+- **SQLite** — Banco de dados relacional
+- **SQL** — Operações no banco de dados
+- **Pytest** — Testes automatizados
+- **Git e GitHub** — Controle de versão
+
+## Estrutura do Projeto
+
+```text
+customer-management-system/
+├── main.py
+├── customer.py
+├── data_base.py
+├── test/
+│   ├── test_customer.py
+│   └── test_database.py
+├── .gitignore
+├── README.md
+└── README.pt-BR.md
+```
+
+O arquivo `customers.db` é criado localmente quando a aplicação é iniciada.
+
+## Requisitos
+
+- Python 3
+- Pytest (para executar os testes automatizados)
+
+O suporte ao SQLite já faz parte da biblioteca padrão do Python.
+
+## Instalação e Execução
+
+Clone o repositório e acesse a pasta do projeto.
+
+Crie um ambiente virtual:
+
+```bash
+python -m venv .venv
+```
+
+Ative o ambiente no Windows:
+
+```powershell
+.venv\Scripts\activate
+```
+
+Instale o Pytest:
+
+```bash
+python -m pip install pytest
+```
+
+Execute o programa:
+
+```bash
 python main.py
 ```
 
-A aplicação usa a biblioteca padrão do Python e cria o arquivo `customers.db` na pasta atual na primeira execução.
+A aplicação inicializa automaticamente o banco de dados SQLite, caso ele ainda não exista.
 
-## Experimentar o menu
+## Menu da Aplicação
 
-1. Escolha **1** para cadastrar um cliente. Informe nome, um e-mail como `demo@example.com` e a cidade. Os três campos são obrigatórios. Use um e-mail em letras minúsculas e sem espaços nas pontas para que as opções de busca, atualização e exclusão encontrem o cadastro.
-2. Escolha **2** para listar os clientes ou **3** para buscar um cliente por e-mail.
-3. Escolha **4** para atualizar a cidade de um cliente.
-4. Escolha **5** para excluir um cliente. Digite **Y** para confirmar ou **N** para cancelar.
-5. Escolha **0** para sair.
+```text
+--- CUSTOMER MANAGEMENT ---
 
-## Executar os testes
-
-O Pytest é necessário apenas para os testes. Crie um ambiente virtual e use diretamente o executável do Python desse ambiente.
-
-**Windows (PowerShell)**
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install pytest==9.2.0
-.\.venv\Scripts\python.exe -m pytest -q
+1 - Add customer
+2 - List customer
+3 - Search customer
+4 - Update customer
+5 - Delete customer
+0 - Exit
 ```
 
-**macOS ou Linux**
+## Testes Automatizados
 
-```sh
-python3 -m venv .venv
-.venv/bin/python -m pip install pytest==9.2.0
-.venv/bin/python -m pytest -q
+O projeto possui testes automatizados para verificar as funções de gerenciamento de clientes, validação de dados e operações no banco SQLite.
+
+Para executar os testes:
+
+```bash
+python -m pytest -v
 ```
 
-Os 29 testes exercitam as funções auxiliares de cadastro e as operações SQLite. Os testes de banco de dados usam arquivos temporários.
+Na última execução verificada, **29 testes passaram**.
 
-## Estrutura do projeto
+## Conhecimentos Desenvolvidos
 
-| Caminho | Finalidade |
-| --- | --- |
-| `main.py` | Menu interativo e ponto de entrada da aplicação |
-| `customer.py` | Funções auxiliares, normalização e verificação de campos obrigatórios |
-| `data_base.py` | Estrutura do banco SQLite e operações de persistência |
-| `test/` | Testes das funções auxiliares e do banco de dados com Pytest |
+- Organização de código Python em módulos
+- Implementação de operações CRUD
+- Integração com banco de dados SQLite
+- Utilização de consultas SQL parametrizadas
+- Tratamento de erros no banco de dados
+- Validação de entradas do usuário
+- Desenvolvimento de testes automatizados com Pytest
+- Utilização de bancos de dados temporários nos testes
+
+## Melhorias Futuras
+
+- Desenvolver uma API REST com FastAPI ou Flask
+- Aprimorar a validação de e-mails
+- Adicionar mais testes de integração
+- Criar uma interface gráfica ou web
+- Implementar integração contínua com GitHub Actions
+
+## Autor
+
+Graduado em Ciência da Computação e estudante de Inteligência Artificial, em transição profissional para desenvolvimento de software, com experiência anterior em operações bancárias e gestão administrativa.

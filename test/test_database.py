@@ -5,8 +5,15 @@ from data_base import (
     create_database,
     insert_customer,
     update_customer_city,
-    delete_customer_by_email
-)
+    delete_customer_by_email,
+    find_customer_by_email
+    )
+
+@pytest.fixture
+def db_path(tmp_path):
+    path = tmp_path / "test.db"    
+    create_database(path)
+    return path
 
 def test_create_database(tmp_path):
     db_path = tmp_path / "test_customer.db"
@@ -22,38 +29,39 @@ def test_create_database(tmp_path):
     assert result == ("customers",)
     
 
-def test_insert_customer(tmp_path):
-    db_path = tmp_path / "test_customers.db"
-    create_database(db_path)
+def test_insert_customer(db_path):
     insert_customer("Walter", "walter@email.com", "Dublin", db_path)
     connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
     cursor.execute(
-        "SELECT * FROM customers WHERE email = ? ",
+        "SELECT * FROM customers WHERE email = ?",
         ("walter@email.com",)
 
     )
     customer = cursor.fetchone()
+    connection.close()
     assert customer[1] == "Walter"
     assert customer[2] == "walter@email.com"
     assert customer[3] == "Dublin"
     
-def test_customer_not_found(tmp_path):
-    db_path = tmp_path / "test_customer.db"
-    create_database(db_path)
+def test_find_customer_by_email_found(db_path):
     insert_customer("Walter", "walter@email.com", "Dublin", db_path)
     connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
-
+    
     cursor.execute(
         "SELECT * FROM customers WHERE email = ?",
         ("naoexiste@email.com",)
-
-    )
-
+    
+        )
+    
     customer = cursor.fetchone()
-    assert customer is None 
     connection.close()
+    assert customer is None 
+
+def test_find_customer_by_email_not_found(db_path):
+    result = find_customer_by_email("naoexiste@email.com", db_path)
+    assert result is None
 
 def test_update_customer_city(tmp_path):
     db_path = tmp_path / "test_customer.db"
