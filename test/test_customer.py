@@ -134,3 +134,20 @@ def test_add_customer():
 )
 def test_validate_city(city, expected):
     assert validate_city(city) is expected
+
+@pytest.mark.parametrize(
+    "name, email, city",
+        [
+        ("","semnome@email.com" ,"uberlandia"),
+        ("Sememail", "","Belo Horizonte"),
+        ("Sem cidade", "semcidade@email.com",""),
+        ("    ", "ana@email.com","Analandia")   
+
+    ]        
+)   
+
+def test_validate_customer_rejects_invalid(name, email, city):
+    assert validate_customer(name, email, city) is False
+
+def test_validate_customer_accepts_valid():
+    assert validate_customer("Walter", "walter@email.com", "Dublin") is True
