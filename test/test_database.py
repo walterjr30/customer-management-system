@@ -6,7 +6,8 @@ from data_base import (
     insert_customer,
     update_customer_city,
     delete_customer_by_email,
-    find_customer_by_email
+    find_customer_by_email,
+    get_customers
     )
 
 @pytest.fixture
@@ -62,6 +63,19 @@ def test_find_customer_by_email_found(db_path):
 def test_find_customer_by_email_not_found(db_path):
     result = find_customer_by_email("naoexiste@email.com", db_path)
     assert result is None
+
+def test_get_customers_empty(db_path):
+    result = get_customers(db_path)
+    assert result == []
+
+def test_get_customers_returns_all(db_path):
+    insert_customer("Walter", "walter@email.com", "Dublin", db_path)
+    insert_customer("Maria", "maria@email.com", "Cork", db_path)
+    result = get_customers(db_path)
+    assert len(result) == 2
+    emails = [row[2] for row in result]
+    assert "walter@email.com" in emails
+    assert "maria@email.com" in emails
 
 def test_update_customer_city(tmp_path):
     db_path = tmp_path / "test_customer.db"
