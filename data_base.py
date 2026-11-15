@@ -4,6 +4,7 @@ from contextlib import contextmanager
 
 DB_PATH = "customers.db"
 
+
 @contextmanager
 def db_connection(db_path=DB_PATH):
     connection = get_connection(db_path)
@@ -12,7 +13,6 @@ def db_connection(db_path=DB_PATH):
             yield connection
     finally:
         connection.close()
-
 
 
 def get_connection(db_path=DB_PATH):
@@ -30,10 +30,7 @@ def create_database(db_path=DB_PATH):
                 email TEXT UNIQUE NOT NULL,
                 city TEXT NOT NULL
             )
-        """
-        )
-
-    
+        """)
 
 
 def insert_customer(name, email, city, db_path=DB_PATH):
@@ -42,40 +39,34 @@ def insert_customer(name, email, city, db_path=DB_PATH):
             "INSERT INTO customers (name, email, city) VALUES (?,?,?)",
             (name, email, city),
         )
-        
 
 
 def get_customers(db_path=DB_PATH):
     with db_connection(db_path) as conn:
-        return conn.execute(
-            "SELECT * FROM customers ORDER BY name"
-            ).fetchall()
-        
+        return conn.execute("SELECT * FROM customers ORDER BY name").fetchall()
+
 
 def find_customer_by_email(email, db_path=DB_PATH):
     with db_connection(db_path) as conn:
         return conn.execute(
             "SELECT * FROM customers WHERE email=?", (email,)
         ).fetchone()
-    
+
 
 def update_customer_city(email, new_city, db_path=DB_PATH):
     with db_connection(db_path) as conn:
         cursor = conn.execute(
             "UPDATE customers SET city = ? WHERE email = ?",
             (new_city, email),
-            )
+        )
         return cursor.rowcount > 0
-            
 
 
 def delete_customer_by_email(email, db_path=DB_PATH):
     with db_connection(db_path) as conn:
-        cursor = conn.execute(
-            "DELETE FROM customers WHERE email = ?",
-            (email,)
-        )
+        cursor = conn.execute("DELETE FROM customers WHERE email = ?", (email,))
         return cursor.rowcount > 0
+
 
 def test_db_connection_closes_connection_on_error(db_path):
     saved = None
@@ -87,6 +78,7 @@ def test_db_connection_closes_connection_on_error(db_path):
 
     with pytest.raises(sqlite3.ProgrammingError):
         saved.execute("SELECT 1")
+
 
 def test_db_connection_rolls_back_on_error(db_path):
     with pytest.raises(ValueError):
