@@ -70,15 +70,11 @@ def get_customers(db_path=DB_PATH):
 
 
 def find_customer_by_email(email, db_path=DB_PATH):
-    connection = get_connection(db_path)
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM customers WHERE email=?", (email,))
-    customer = cursor.fetchone()
-
-    cursor.close()
-    connection.close()
-    return customer
-
+    with db_connection(db_path) as conn:
+        return conn.execute(
+            "SELECT * FROM customers WHERE email=?", (email,)
+        ).fetchone()
+    
 
 def update_customer_city(email, new_city, db_path=DB_PATH):
     connection = get_connection(db_path)
