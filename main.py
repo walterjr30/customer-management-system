@@ -58,7 +58,7 @@ while True:
             print("No customer found")    
 
     elif option == "3":
-        email_verify = input("Input email for verification: ").strip().lower()
+        email_verify = normalize_email(input("Input email for verification: "))
         customer = find_customer_by_email(email_verify)
         if customer is not None:
             print("Customer found ")
@@ -69,7 +69,7 @@ while True:
             print("Customer not found")
 
     elif option == "4":
-        email_update = input("Input email for update: ").strip().lower()
+        email_update = normalize_email(input("Input email for update: "))
         city_update = input("Enter new city for update: ").strip()
         validation_city = validate_city(city_update)
         if validation_city:
@@ -82,7 +82,7 @@ while True:
             print("City cannot be empty")    
 
     elif option == "5":
-        email_to_delete = input("Enter email for delete: ").strip().lower()
+        email_to_delete = normalize_email(input("Enter email for delete: "))
         customer = find_customer_by_email(email_to_delete)
         if customer is not None:
             question = input("Are you sure you want to delete this customer? (Y/N)").strip().upper()
