@@ -1,4 +1,5 @@
 import sqlite3
+import pytest
 from contextlib import contextmanager
 
 DB_PATH = "customers.db"
@@ -75,4 +76,25 @@ def delete_customer_by_email(email, db_path=DB_PATH):
             (email,)
         )
         return cursor.rowcount > 0
-        
+
+def test_db_connection_closes_connection_on_error(db_path):
+    saved = None
+
+    with pytest.raises(ValueError):
+        with db_connection(db_path) as conn:
+            saved = conn
+            raise ValueError("boom")
+
+    with pytest.raises(sqlite3.ProgrammingError):
+        saved.execute("SELECT 1")
+
+def test_db_connection_rolls_back_on_error(db_path):
+    with pytest.raises(ValueError):
+        with db_connection(db_path) as conn:
+            conn.execute(
+                "INSERT INTO customers (name, email, city) VALUES (?,?,?)",
+                ("Walter", "walter@email.com", "Dublin"),
+            )
+            raise ValueError("boom")
+
+    assert get_customers(db_path) == []
