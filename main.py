@@ -69,11 +69,11 @@ def update_customer():
 def delete_customer():
     email_to_delete = normalize_email(input("Enter email for delete: "))
     customer = find_customer_by_email(email_to_delete)
-    if customer is  None:
+    if customer is None:
         print("Customer not found")
         return
-    question = input("Are you sure you want to delete this customer? (Y/N)").strip().upper()
-    if question == 'N':
+    question = input("Are you sure you want to delete this customer? (Y/N): ").strip().upper()
+    if question == "N":
         print("Deletion cancelled")
         return
     if question != "Y":
@@ -86,9 +86,22 @@ def delete_customer():
     else:
         print("Customer could not be deleted")    
         
-       
-          
-        
+def add_customer():
+    name = input("Enter name: ").strip()
+    email = normalize_email(input("Enter email: "))
+    city = input("Enter city: ").strip()
+    if not validate_customer(name, email, city):
+        print("All fields are required") 
+        return
+    if find_customer_by_email(email) is not None:
+        print("Email already registered")
+        return
+    try:
+        insert_customer(name, email, city)
+        print("Customer added successfully")
+    except sqlite3.IntegrityError:
+        print("Email already registered")
+
 
 create_database()
     
@@ -96,36 +109,15 @@ while True:
     show_menu()
     option = input("Choose your option: ")
     if option == "1":
-        name = input("Enter name: ").strip()
-        email = normalize_email(input("Enter email: "))
-        city = input("Enter city: ").strip()
-        validate = validate_customer(name, email, city)
-        if validate:
-            verify_customer = find_customer_by_email(email)
-            if verify_customer is not None:
-                print("Email already registered")
-            else:
-                try:
-                    insert_customer(name, email, city)
-                    print("Customer added successfully")
-                except sqlite3.IntegrityError:
-                    print("Email already registered")       
-        else:
-            print("All fields are required")        
-    
+       add_customer() 
     elif option == "2":
        list_customers()    
-
     elif option == "3":
         search_customer()
-
     elif option == "4":
         update_customer()      
-
     elif option == "5":
         delete_customer()
-
-
     elif option == "0":
         break
     else:
