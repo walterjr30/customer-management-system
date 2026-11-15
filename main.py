@@ -33,6 +33,26 @@ def print_customer(customer):
     print(f"City:  {customer['city']}")
     print()
 
+def list_customers():
+    customers = get_customers()
+
+    if not customers:
+        print("No customer found")
+        return
+
+    for customer in customers:
+        print_customer(customer)
+    print("Total customers:", len(customers))
+
+def search_customer():
+    email_verify = normalize_email(input("Input email for verification: "))
+    customer = find_customer_by_email(email_verify)
+    if customer is None:
+        print("Customer not found")
+        return
+    
+    print("Customer found")
+    print_customer(customer)
 
 create_database()
 
@@ -58,22 +78,10 @@ while True:
             print("All fields are required")        
     
     elif option == "2":
-        customers = get_customers()
-        if customers:
-            for customer in customers:
-                print_customer(customer)
-            print("Total customers:", len(customers))
-        else:
-            print("No customer found")    
+       list_customers()    
 
     elif option == "3":
-        email_verify = normalize_email(input("Input email for verification: "))
-        customer = find_customer_by_email(email_verify)
-        if customer is not None:
-            print("Customer found")
-            print_customer(customer )
-        else:
-            print("Customer not found")
+        search_customer()
 
     elif option == "4":
         email_update = normalize_email(input("Input email for update: "))
