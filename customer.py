@@ -61,10 +61,7 @@ def validate_customer(name, email, city):
     name = normalize_name(name)
     email = normalize_email(email)
     city = normalize_city(city)
-    if name == "" or email == "" or city == "":
-        return False
-
-    return True
+    return all([name, email, city])
 
 
 def validate_city(city):
