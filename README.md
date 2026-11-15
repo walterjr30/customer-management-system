@@ -10,7 +10,7 @@ I developed this project to strengthen my Python programming skills and gain pra
 
 The application allows users to manage customer records through a command-line interface, storing data in a SQLite database.
 
-During development, I practiced CRUD operations, SQL queries, input validation, modular programming, exception handling, and automated testing.
+During development, I practiced CRUD operations, SQL queries, input validation, modular programming, exception handling, automated testing, and refactoring with tests as a safety net.
 
 This project is part of my professional transition into software development.
 
@@ -21,29 +21,31 @@ This project is part of my professional transition into software development.
 - Search customers by email
 - Update customer city
 - Delete customers with confirmation
-- Validate user input
+- Validate and normalize user input
 - Prevent duplicate email registrations
 - Store data persistently using SQLite
 - Run automated tests with Pytest
 
 ## Technologies
 
-- **Python** — Application logic
-- **SQLite** — Relational database
-- **SQL** — Database operations
-- **Pytest** — Automated testing
-- **Git and GitHub** — Version control
+- **Python**: application logic
+- **SQLite**: relational database
+- **SQL**: database operations
+- **Pytest**: automated testing
+- **Ruff**: formatting and linting
+- **Git and GitHub**: version control
 
 ## Project Structure
 
 ```text
 customer-management-system/
-├── main.py
-├── customer.py
-├── data_base.py
+├── main.py            # menu and user interaction
+├── customer.py        # input normalization and validation
+├── data_base.py       # SQLite access (db_connection context manager)
 ├── test/
 │   ├── test_customer.py
 │   └── test_database.py
+├── pyproject.toml     # ruff configuration
 ├── .gitignore
 ├── README.md
 └── README.pt-BR.md
@@ -55,6 +57,7 @@ The `customers.db` file is created locally when the application starts.
 
 - Python 3
 - Pytest (for running automated tests)
+- Ruff (optional, for formatting and linting)
 
 SQLite support is included in Python's standard library.
 
@@ -74,10 +77,16 @@ Activate it on Windows:
 .venv\Scripts\activate
 ```
 
-Install Pytest:
+Activate it on Linux/macOS:
 
 ```bash
-python -m pip install pytest
+source .venv/bin/activate
+```
+
+Install Pytest (and Ruff, optionally):
+
+```bash
+python -m pip install pytest ruff
 ```
 
 Run the application:
@@ -94,7 +103,7 @@ The application automatically initializes the SQLite database if it does not alr
 --- CUSTOMER MANAGEMENT ---
 
 1 - Add customer
-2 - List customer
+2 - List customers
 3 - Search customer
 4 - Update customer
 5 - Delete customer
@@ -103,7 +112,9 @@ The application automatically initializes the SQLite database if it does not alr
 
 ## Automated Tests
 
-The project includes automated tests covering customer management functions, input validation, and SQLite database operations.
+The test suite covers input validation and normalization, all database operations (including checks that updates and deletes only affect the targeted customer), and the transaction behavior of the `db_connection` context manager (commit, rollback, and connection closing).
+
+Tests use temporary databases, so the real `customers.db` is never touched.
 
 Run the tests:
 
@@ -111,7 +122,14 @@ Run the tests:
 python -m pytest -v
 ```
 
-At the latest verified execution, **29 tests passed**.
+## Code Quality
+
+Format and lint the code with Ruff:
+
+```bash
+ruff format .
+ruff check .
+```
 
 ## What I Learned
 
@@ -123,12 +141,18 @@ At the latest verified execution, **29 tests passed**.
 - Validating user input
 - Creating automated tests with Pytest
 - Using temporary databases for testing
+- Refactoring safely by writing tests first
+- Writing a context manager to centralize commit, rollback, and connection handling
+- Verifying tests by deliberately breaking the code
+- Using Git with small, descriptive commits
+- Formatting and linting with Ruff
 
 ## Future Improvements
 
+- Improve email validation (format checking)
+- Add tests for the menu functions in `main.py`
+- Add type hints and docstrings
 - Develop a REST API using FastAPI or Flask
-- Improve email validation
-- Add more integration tests
 - Implement a graphical or web interface
 - Introduce continuous integration with GitHub Actions
 
