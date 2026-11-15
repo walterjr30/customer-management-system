@@ -2,7 +2,8 @@ import sqlite3
 
 from customer import(
     validate_customer,
-    validate_city
+    validate_city,
+    normalize_email
 )
 
 from data_base import(
@@ -29,7 +30,7 @@ while True:
 
     if option == "1":
         name = input("Enter name: ").strip()
-        email = input("Enter email: ").strip().lower()
+        email = normalize_email(input("Enter email: "))
         city = input("Enter city: ").strip()
         validate = validate_customer(name, email, city)
         if validate:

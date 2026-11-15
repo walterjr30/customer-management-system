@@ -1,0 +1,7 @@
+[33m0a85c6e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Remove código morto da versão em lista
+[33m5e1d12d[m Adiciona testes de normalize_name e normalize_city
+[33m02b70aa[m Reforca testes de validate customer
+[33m423e9b4[m Adiciona testes de update/delete que afetam só o cliente certo
+[33m3f8246a[m Adiciona testes de get_customers
+[33mb084bab[m Adiciona testes de find_customer_by_email
+[33meb46e04[m Primeira versão do CRUD de clientes

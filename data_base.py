@@ -1,10 +1,12 @@
 import sqlite3
 
-def get_connection(db_path= "customers.db"):
+DB_PATH = "customers.db"
+
+def get_connection(db_path=DB_PATH):
     return sqlite3.connect(db_path)
 
 
-def create_database(db_path="customers.db"):
+def create_database(db_path=DB_PATH):
     connection = get_connection(db_path)
 
     cursor = connection.cursor()
@@ -22,13 +24,13 @@ def create_database(db_path="customers.db"):
     cursor.close()
     connection.close()
 
-def insert_customer(name, email, city, db_path="customers.db"):
+def insert_customer(name, email, city, db_path=DB_PATH):
     connection = get_connection(db_path)
     try:
         cursor = connection.cursor()
         cursor.execute(
             "INSERT INTO customers (name, email, city) VALUES (?,?,?)",
-            (name, email, city)
+            (name, email, city),
         )
         connection.commit()
         cursor.close()
@@ -37,7 +39,7 @@ def insert_customer(name, email, city, db_path="customers.db"):
 
         connection.close()    
 
-def get_customers(db_path="customers.db"):
+def get_customers(db_path=DB_PATH):
     connection = get_connection(db_path)
 
     try:
@@ -52,11 +54,10 @@ def get_customers(db_path="customers.db"):
     
     finally: 
         connection.close()
-
     
 
 
-def find_customer_by_email(email, db_path="customers.db"):
+def find_customer_by_email(email, db_path=DB_PATH):
     connection = get_connection(db_path)
     cursor = connection.cursor()
     cursor.execute(
@@ -69,7 +70,7 @@ def find_customer_by_email(email, db_path="customers.db"):
     connection.close()
     return customer
 
-def update_customer_city(email, new_city, db_path="customers.db"):
+def update_customer_city(email, new_city, db_path=DB_PATH):
     connection = get_connection(db_path)
     try:
         with connection:
@@ -86,7 +87,7 @@ def update_customer_city(email, new_city, db_path="customers.db"):
         connection.close()
         
 
-def delete_customer_by_email(email, db_path="customers.db"):
+def delete_customer_by_email(email, db_path=DB_PATH):
     connection = get_connection(db_path)
     try:
         with connection:
@@ -104,17 +105,3 @@ def delete_customer_by_email(email, db_path="customers.db"):
 
     
 
-if __name__ == "__main__":
-    create_database()
-
-    customers = get_customers()
-    print(customers)
-
-    insert_customer("Test User", "test@example.com", "Dublin")
-
-    print(find_customer_by_email("test@example.com"))
-
-    result = delete_customer_by_email("test@example.com")
-    print(result)
-
-    print(find_customer_by_email("test@example.com"))
