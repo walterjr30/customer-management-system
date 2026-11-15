@@ -50,9 +50,9 @@ while True:
         customers = get_customers()
         if customers:
             for customer in customers:
-                print("Name: ", customer[1])
-                print("Email: ", customer[2])
-                print("City: ", customer[3])
+                print("Name: ", customer["name"])
+                print("Email: ", customer["email"])
+                print("City: ", customer["city"])
             print("Total customers:", len(customers))
         else:
             print("No customer found")    
@@ -62,9 +62,9 @@ while True:
         customer = find_customer_by_email(email_verify)
         if customer is not None:
             print("Customer found ")
-            print("Name: ", customer[1])
-            print("Email: ", customer[2])
-            print("City: ", customer[3]) 
+            print("Name: ", customer["name"])
+            print("Email: ", customer["email"])
+            print("City: ", customer["city"]) 
         else:
             print("Customer not found")
 
