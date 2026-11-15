@@ -21,22 +21,18 @@ def get_connection(db_path=DB_PATH):
 
 
 def create_database(db_path=DB_PATH):
-    connection = get_connection(db_path)
-
-    cursor = connection.cursor()
-
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS customers(
-            id INTEGER PRIMARY KEY,
-            name TEXT NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            city TEXT NOT NULL
+    with db_connection(db_path) as conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS customers(
+                id INTEGER PRIMARY KEY,
+                name TEXT NOT NULL,
+                email TEXT UNIQUE NOT NULL,
+                city TEXT NOT NULL
+            )
+        """
         )
-    """)
 
-    connection.commit()
-    cursor.close()
-    connection.close()
+    
 
 
 def insert_customer(name, email, city, db_path=DB_PATH):
@@ -76,6 +72,7 @@ def delete_customer_by_email(email, db_path=DB_PATH):
     with db_connection(db_path) as conn:
         cursor = conn.execute(
             "DELETE FROM customers WHERE email = ?",
-            (email,))
+            (email,)
+        )
         return cursor.rowcount > 0
         
