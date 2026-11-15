@@ -15,19 +15,30 @@ from data_base import(
     delete_customer_by_email
 )
 
-create_database()
 
-while True:
+
+def show_menu():
     print("\n --- CUSTOMER MANAGEMENT ---")
     print("1 - Add customer")
-    print("2 - List customer")
+    print("2 - List customers")
     print("3 - Search customer")
     print("4 - Update customer")
     print("5 - Delete customer")
     print("0 - Exit")
+    
 
+def print_customer(customer):
+    print(f"Name:  {customer['name']}")
+    print(f"Email: {customer['email']}")
+    print(f"City:  {customer['city']}")
+    print()
+
+
+create_database()
+
+while True:
+    show_menu()
     option = input("Choose your option: ")
-
     if option == "1":
         name = input("Enter name: ").strip()
         email = normalize_email(input("Enter email: "))
@@ -50,9 +61,7 @@ while True:
         customers = get_customers()
         if customers:
             for customer in customers:
-                print("Name: ", customer["name"])
-                print("Email: ", customer["email"])
-                print("City: ", customer["city"])
+                print_customer(customer)
             print("Total customers:", len(customers))
         else:
             print("No customer found")    
@@ -61,10 +70,8 @@ while True:
         email_verify = normalize_email(input("Input email for verification: "))
         customer = find_customer_by_email(email_verify)
         if customer is not None:
-            print("Customer found ")
-            print("Name: ", customer["name"])
-            print("Email: ", customer["email"])
-            print("City: ", customer["city"]) 
+            print("Customer found")
+            print_customer(customer )
         else:
             print("Customer not found")
 
