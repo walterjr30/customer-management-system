@@ -55,19 +55,11 @@ def insert_customer(name, email, city, db_path=DB_PATH):
 
 
 def get_customers(db_path=DB_PATH):
-    connection = get_connection(db_path)
-
-    try:
-        cursor = connection.cursor()
-        cursor.execute("SELECT * FROM customers")
-
-        customers = cursor.fetchall()
-
-        return customers
-
-    finally:
-        connection.close()
-
+    with db_connection(db_path) as conn:
+        return conn.execute(
+            "SELECT * FROM customers ORDER BY name"
+            ).fetchall()
+        
 
 def find_customer_by_email(email, db_path=DB_PATH):
     with db_connection(db_path) as conn:
