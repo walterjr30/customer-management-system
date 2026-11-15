@@ -41,7 +41,7 @@ def create_database(db_path=DB_PATH):
 
 def insert_customer(name, email, city, db_path=DB_PATH):
     with db_connection(db_path) as conn:
-        return conn.execute(
+        conn.execute(
             "INSERT INTO customers (name, email, city) VALUES (?,?,?)",
             (name, email, city),
         )
@@ -63,19 +63,13 @@ def find_customer_by_email(email, db_path=DB_PATH):
     
 
 def update_customer_city(email, new_city, db_path=DB_PATH):
-    connection = get_connection(db_path)
-    try:
-        with connection:
-            cursor = connection.cursor()
-            cursor.execute(
-                "UPDATE customers SET city = ? WHERE email = ?", (new_city, email)
+    with db_connection(db_path) as conn:
+        cursor = conn.execute(
+            "UPDATE customers SET city = ? WHERE email = ?",
+            (new_city, email),
             )
-            result = cursor.rowcount
-
-        return result > 0
-
-    finally:
-        connection.close()
+        return cursor.rowcount > 0
+            
 
 
 def delete_customer_by_email(email, db_path=DB_PATH):
