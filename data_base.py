@@ -40,18 +40,12 @@ def create_database(db_path=DB_PATH):
 
 
 def insert_customer(name, email, city, db_path=DB_PATH):
-    connection = get_connection(db_path)
-    try:
-        cursor = connection.cursor()
-        cursor.execute(
+    with db_connection(db_path) as conn:
+        return conn.execute(
             "INSERT INTO customers (name, email, city) VALUES (?,?,?)",
             (name, email, city),
         )
-        connection.commit()
-        cursor.close()
-
-    finally:
-        connection.close()
+        
 
 
 def get_customers(db_path=DB_PATH):
