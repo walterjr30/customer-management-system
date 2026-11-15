@@ -102,24 +102,26 @@ def add_customer():
     except sqlite3.IntegrityError:
         print("Email already registered")
 
+ACTIONS = {
+    "1": add_customer,
+    "2": list_customers,
+    "3": search_customer,
+    "4": update_customer,
+    "5": delete_customer,
+}
 
-create_database()
-    
-while True:
-    show_menu()
-    option = input("Choose your option: ")
-    if option == "1":
-       add_customer() 
-    elif option == "2":
-       list_customers()    
-    elif option == "3":
-        search_customer()
-    elif option == "4":
-        update_customer()      
-    elif option == "5":
-        delete_customer()
-    elif option == "0":
-        break
-    else:
-        print("Invalid option")
+def main():
+    create_database()
+    while True:
+        show_menu()
+        option = input("Choose your option: ")
+        if option == "0":
+            break
+        action = ACTIONS.get(option)
+        if action is None:
+            print("Invalid option")
+            continue
+        action()
+if __name__ == "__main__":
+    main()
 
