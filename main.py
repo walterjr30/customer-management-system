@@ -54,8 +54,44 @@ def search_customer():
     print("Customer found")
     print_customer(customer)
 
-create_database()
+def update_customer():
+    email_update = normalize_email(input("Input email for update: "))
+    new_city = input("Enter new city for update: ").strip()
+    if not validate_city(new_city):
+        print("City cannot be empty")  
+        return
+    if not update_customer_city(email_update, new_city):
+        print("Customer not found")
+        return
+    
+    print("Customer updated successfully!")
+        
+def delete_customer():
+    email_to_delete = normalize_email(input("Enter email for delete: "))
+    customer = find_customer_by_email(email_to_delete)
+    if customer is  None:
+        print("Customer not found")
+        return
+    question = input("Are you sure you want to delete this customer? (Y/N)").strip().upper()
+    if question == 'N':
+        print("Deletion cancelled")
+        return
+    if question != "Y":
+        print("Invalid option")
+        return
+    
+    deleted = delete_customer_by_email(email_to_delete)
+    if deleted:
+        print("Customer deleted successfully")
+    else:
+        print("Customer could not be deleted")    
+        
+       
+          
+        
 
+create_database()
+    
 while True:
     show_menu()
     option = input("Choose your option: ")
@@ -84,36 +120,10 @@ while True:
         search_customer()
 
     elif option == "4":
-        email_update = normalize_email(input("Input email for update: "))
-        city_update = input("Enter new city for update: ").strip()
-        validation_city = validate_city(city_update)
-        if validation_city:
-            updated = update_customer_city(email_update, city_update)
-            if updated:
-                print("Customer updated successfully!")
-            else:
-                print("Customer not found")
-        else:
-            print("City cannot be empty")    
+        update_customer()      
 
     elif option == "5":
-        email_to_delete = normalize_email(input("Enter email for delete: "))
-        customer = find_customer_by_email(email_to_delete)
-        if customer is not None:
-            question = input("Are you sure you want to delete this customer? (Y/N)").strip().upper()
-            if question == "Y":
-                deleted = delete_customer_by_email(email_to_delete)
-                if deleted:
-                    print("Customer deleted successfully")
-                else:
-                    print("Customer could not be deleted")    
-            elif question == "N":
-                print("Deletion cancelled")
-            else:
-                print("Invalid option")    
-        else:
-            print("Customer not found")
-        
+        delete_customer()
 
 
     elif option == "0":
