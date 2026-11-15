@@ -1,11 +1,11 @@
 import pytest
 
 from customer import (
-    normalize_name,
     normalize_city,
     normalize_email,
-    validate_customer,
+    normalize_name,
     validate_city,
+    validate_customer,
 )
 
 

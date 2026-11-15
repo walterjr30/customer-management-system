@@ -1,14 +1,15 @@
 import sqlite3
+
 import pytest
 
 from data_base import (
     create_database,
-    insert_customer,
-    update_customer_city,
+    db_connection,
     delete_customer_by_email,
     find_customer_by_email,
     get_customers,
-    db_connection,
+    insert_customer,
+    update_customer_city,
 )
 
 
@@ -155,22 +156,20 @@ def test_duplicate_email(tmp_path):
 def test_db_connection_closes_connection_on_error(db_path):
     saved = None
 
-    with pytest.raises(ValueError):
-        with db_connection(db_path) as conn:
-            saved = conn
-            raise ValueError("boom")
+    with pytest.raises(ValueError), db_connection(db_path) as conn:
+        saved = conn
+        raise ValueError("boom")
 
     with pytest.raises(sqlite3.ProgrammingError):
         saved.execute("SELECT 1")
 
 
 def test_db_connection_rolls_back_on_error(db_path):
-    with pytest.raises(ValueError):
-        with db_connection(db_path) as conn:
-            conn.execute(
-                "INSERT INTO customers (name, email, city) VALUES (?,?,?)",
-                ("Walter", "walter@email.com", "Dublin"),
-            )
-            raise ValueError("boom")
+    with pytest.raises(ValueError), db_connection(db_path) as conn:
+        conn.execute(
+            "INSERT INTO customers (name, email, city) VALUES (?,?,?)",
+            ("Walter", "walter@email.com", "Dublin"),
+        )
+        raise ValueError("boom")
 
     assert get_customers(db_path) == []

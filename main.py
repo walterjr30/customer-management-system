@@ -1,14 +1,13 @@
 import sqlite3
 
-from customer import validate_customer, validate_city, normalize_email
-
+from customer import normalize_email, validate_city, validate_customer
 from data_base import (
-    find_customer_by_email,
     create_database,
-    insert_customer,
-    get_customers,
-    update_customer_city,
     delete_customer_by_email,
+    find_customer_by_email,
+    get_customers,
+    insert_customer,
+    update_customer_city,
 )
 
 
