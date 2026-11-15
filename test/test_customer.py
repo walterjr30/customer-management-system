@@ -37,8 +37,36 @@ def test_normalize_email(email,expected):
     result = normalize_email(email)
     assert result == expected
 
+@pytest.mark.parametrize(
+    "name, expected",
+    [
+        (" Walter ","Walter"),
+        ("Walter", "Walter"),
+        ("Ana Maria", "Ana Maria"),
+        ("  ",""),
+        
+    ]        
+) 
 
- 
+def test_normalize_name(name,expected):
+    result = normalize_name(name)
+    assert result == expected
+
+@pytest.mark.parametrize(
+    "city, expected",
+    [
+        (" Dublin ","Dublin"),
+        ("Dublin","Dublin"),
+        ("  ",""),
+        
+    ]        
+) 
+
+def test_normalize_city(city,expected):
+    result = normalize_city(city)
+    assert result == expected
+
+
 def test_create_customer():
     result = create_customer("Walter", "WALTER@GMAIL.COM", "Dublin")
     assert result["name"] == "Walter"
