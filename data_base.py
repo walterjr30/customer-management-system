@@ -73,13 +73,9 @@ def update_customer_city(email, new_city, db_path=DB_PATH):
 
 
 def delete_customer_by_email(email, db_path=DB_PATH):
-    connection = get_connection(db_path)
-    try:
-        with connection:
-            cursor = connection.cursor()
-            cursor.execute("DELETE FROM customers WHERE email = ?", (email,))
-            result = cursor.rowcount
-        return result > 0
-
-    finally:
-        connection.close()
+    with db_connection(db_path) as conn:
+        cursor = conn.execute(
+            "DELETE FROM customers WHERE email = ?",
+            (email,))
+        return cursor.rowcount > 0
+        
