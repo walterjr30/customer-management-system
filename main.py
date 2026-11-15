@@ -1,20 +1,15 @@
 import sqlite3
 
-from customer import(
-    validate_customer,
-    validate_city,
-    normalize_email
-)
+from customer import validate_customer, validate_city, normalize_email
 
-from data_base import(
+from data_base import (
     find_customer_by_email,
     create_database,
     insert_customer,
     get_customers,
     update_customer_city,
-    delete_customer_by_email
+    delete_customer_by_email,
 )
-
 
 
 def show_menu():
@@ -25,13 +20,14 @@ def show_menu():
     print("4 - Update customer")
     print("5 - Delete customer")
     print("0 - Exit")
-    
+
 
 def print_customer(customer):
     print(f"Name:  {customer['name']}")
     print(f"Email: {customer['email']}")
     print(f"City:  {customer['city']}")
     print()
+
 
 def list_customers():
     customers = get_customers()
@@ -44,54 +40,60 @@ def list_customers():
         print_customer(customer)
     print("Total customers:", len(customers))
 
+
 def search_customer():
     email_verify = normalize_email(input("Input email for verification: "))
     customer = find_customer_by_email(email_verify)
     if customer is None:
         print("Customer not found")
         return
-    
+
     print("Customer found")
     print_customer(customer)
+
 
 def update_customer():
     email_update = normalize_email(input("Input email for update: "))
     new_city = input("Enter new city for update: ").strip()
     if not validate_city(new_city):
-        print("City cannot be empty")  
+        print("City cannot be empty")
         return
     if not update_customer_city(email_update, new_city):
         print("Customer not found")
         return
-    
+
     print("Customer updated successfully!")
-        
+
+
 def delete_customer():
     email_to_delete = normalize_email(input("Enter email for delete: "))
     customer = find_customer_by_email(email_to_delete)
     if customer is None:
         print("Customer not found")
         return
-    question = input("Are you sure you want to delete this customer? (Y/N): ").strip().upper()
+    question = (
+        input("Are you sure you want to delete this customer? (Y/N): ").strip().upper()
+    )
     if question == "N":
         print("Deletion cancelled")
         return
     if question != "Y":
         print("Invalid option")
         return
-    
+
     deleted = delete_customer_by_email(email_to_delete)
     if deleted:
         print("Customer deleted successfully")
     else:
-        print("Customer could not be deleted")    
-        
+        print("Customer could not be deleted")
+
+
 def add_customer():
     name = input("Enter name: ").strip()
     email = normalize_email(input("Enter email: "))
     city = input("Enter city: ").strip()
     if not validate_customer(name, email, city):
-        print("All fields are required") 
+        print("All fields are required")
         return
     if find_customer_by_email(email) is not None:
         print("Email already registered")
@@ -102,6 +104,7 @@ def add_customer():
     except sqlite3.IntegrityError:
         print("Email already registered")
 
+
 ACTIONS = {
     "1": add_customer,
     "2": list_customers,
@@ -110,11 +113,12 @@ ACTIONS = {
     "5": delete_customer,
 }
 
+
 def main():
     create_database()
     while True:
         show_menu()
-        option = input("Choose your option: ")
+        option = input("Choose your option: ").strip()
         if option == "0":
             break
         action = ACTIONS.get(option)
@@ -122,6 +126,10 @@ def main():
             print("Invalid option")
             continue
         action()
-if __name__ == "__main__":
-    main()
 
+
+if __name__ == "__main__":
+    try:
+        main()
+    except (KeyboardInterrupt, EOFError):
+        print("\nBye!")
