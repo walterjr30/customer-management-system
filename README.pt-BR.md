@@ -2,48 +2,50 @@
 
 [English](README.md) | [Português](README.pt-BR.md)
 
-Sistema de gerenciamento de clientes desenvolvido em **Python, SQLite e Pytest**, com interface de linha de comando.
+Um Sistema de Gerenciamento de Clientes em linha de comando, desenvolvido com **Python, SQLite e Pytest**.
 
 ## Sobre o Projeto
 
-Desenvolvi este projeto para aprimorar meus conhecimentos em Python e adquirir experiência prática em desenvolvimento de software.
+Desenvolvi este projeto para fortalecer minhas habilidades em programação Python e ganhar experiência prática em desenvolvimento de software.
 
-A aplicação permite gerenciar cadastros de clientes por meio de um menu interativo, armazenando as informações em um banco de dados SQLite.
+A aplicação permite gerenciar registros de clientes por meio de uma interface de linha de comando, armazenando os dados em um banco de dados SQLite.
 
-Durante o desenvolvimento, pratiquei operações CRUD, consultas SQL, validação de dados, programação modular, tratamento de exceções e testes automatizados.
+Durante o desenvolvimento, pratiquei operações CRUD, consultas SQL, validação de entrada, programação modular, tratamento de exceções, testes automatizados e refatoração com testes como rede de segurança.
 
-Este projeto faz parte da minha transição profissional para a área de desenvolvimento de software.
+Este projeto faz parte da minha transição profissional para o desenvolvimento de software.
 
 ## Funcionalidades
 
-- Cadastrar novos clientes
+- Adicionar novos clientes
 - Listar clientes cadastrados
-- Buscar clientes pelo e-mail
-- Atualizar a cidade de um cliente
-- Excluir clientes mediante confirmação
-- Validar os dados informados
-- Impedir cadastros com e-mails duplicados
-- Armazenar os dados permanentemente com SQLite
+- Buscar clientes por e-mail
+- Atualizar a cidade do cliente
+- Excluir clientes com confirmação
+- Validar e normalizar a entrada do usuário
+- Impedir cadastros com e-mail duplicado
+- Armazenar dados de forma persistente com SQLite
 - Executar testes automatizados com Pytest
 
-## Tecnologias Utilizadas
+## Tecnologias
 
-- **Python** — Lógica da aplicação
-- **SQLite** — Banco de dados relacional
-- **SQL** — Operações no banco de dados
-- **Pytest** — Testes automatizados
-- **Git e GitHub** — Controle de versão
+- **Python**: lógica da aplicação
+- **SQLite**: banco de dados relacional
+- **SQL**: operações no banco de dados
+- **Pytest**: testes automatizados
+- **Ruff**: formatação e análise de código
+- **Git e GitHub**: controle de versão
 
 ## Estrutura do Projeto
 
 ```text
 customer-management-system/
-├── main.py
-├── customer.py
-├── data_base.py
+├── main.py            # menu e interação com o usuário
+├── customer.py        # normalização e validação de entrada
+├── data_base.py       # acesso ao SQLite (context manager db_connection)
 ├── test/
 │   ├── test_customer.py
 │   └── test_database.py
+├── pyproject.toml     # configuração do ruff
 ├── .gitignore
 ├── README.md
 └── README.pt-BR.md
@@ -55,12 +57,13 @@ O arquivo `customers.db` é criado localmente quando a aplicação é iniciada.
 
 - Python 3
 - Pytest (para executar os testes automatizados)
+- Ruff (opcional, para formatação e análise de código)
 
-O suporte ao SQLite já faz parte da biblioteca padrão do Python.
+O suporte ao SQLite já está incluído na biblioteca padrão do Python.
 
-## Instalação e Execução
+## Instalação e Uso
 
-Clone o repositório e acesse a pasta do projeto.
+Clone o repositório e acesse o diretório do projeto.
 
 Crie um ambiente virtual:
 
@@ -68,25 +71,31 @@ Crie um ambiente virtual:
 python -m venv .venv
 ```
 
-Ative o ambiente no Windows:
+Ative-o no Windows:
 
 ```powershell
 .venv\Scripts\activate
 ```
 
-Instale o Pytest:
+Ative-o no Linux/macOS:
 
 ```bash
-python -m pip install pytest
+source .venv/bin/activate
 ```
 
-Execute o programa:
+Instale o Pytest (e o Ruff, opcionalmente):
+
+```bash
+python -m pip install pytest ruff
+```
+
+Execute a aplicação:
 
 ```bash
 python main.py
 ```
 
-A aplicação inicializa automaticamente o banco de dados SQLite, caso ele ainda não exista.
+A aplicação inicializa automaticamente o banco de dados SQLite caso ele ainda não exista.
 
 ## Menu da Aplicação
 
@@ -94,44 +103,61 @@ A aplicação inicializa automaticamente o banco de dados SQLite, caso ele ainda
 --- CUSTOMER MANAGEMENT ---
 
 1 - Add customer
-2 - List customer
+2 - List customers
 3 - Search customer
 4 - Update customer
 5 - Delete customer
 0 - Exit
 ```
 
+O menu da aplicação está em inglês.
+
 ## Testes Automatizados
 
-O projeto possui testes automatizados para verificar as funções de gerenciamento de clientes, validação de dados e operações no banco SQLite.
+A suíte de testes cobre a validação e a normalização de entrada, todas as operações de banco de dados (incluindo verificações de que atualizações e exclusões afetam apenas o cliente desejado) e o comportamento transacional do context manager `db_connection` (commit, rollback e fechamento da conexão).
 
-Para executar os testes:
+Os testes usam bancos de dados temporários, então o `customers.db` real nunca é alterado.
+
+Execute os testes:
 
 ```bash
 python -m pytest -v
 ```
 
-Na última execução verificada, **29 testes passaram**.
+## Qualidade de Código
 
-## Conhecimentos Desenvolvidos
+Formate e analise o código com o Ruff:
 
-- Organização de código Python em módulos
-- Implementação de operações CRUD
-- Integração com banco de dados SQLite
-- Utilização de consultas SQL parametrizadas
-- Tratamento de erros no banco de dados
-- Validação de entradas do usuário
-- Desenvolvimento de testes automatizados com Pytest
-- Utilização de bancos de dados temporários nos testes
+```bash
+ruff format .
+ruff check .
+```
+
+## O Que Aprendi
+
+- Organizar código Python em módulos
+- Implementar operações CRUD
+- Trabalhar com bancos de dados SQLite
+- Escrever consultas SQL parametrizadas
+- Tratar erros de banco de dados
+- Validar a entrada do usuário
+- Criar testes automatizados com Pytest
+- Usar bancos de dados temporários em testes
+- Refatorar com segurança escrevendo testes primeiro
+- Escrever um context manager para centralizar commit, rollback e gerenciamento da conexão
+- Verificar testes quebrando o código de propósito
+- Usar Git com commits pequenos e descritivos
+- Formatar e analisar código com Ruff
 
 ## Melhorias Futuras
 
+- Melhorar a validação de e-mail (verificação de formato)
+- Adicionar testes para as funções de menu em `main.py`
+- Adicionar type hints e docstrings
 - Desenvolver uma API REST com FastAPI ou Flask
-- Aprimorar a validação de e-mails
-- Adicionar mais testes de integração
-- Criar uma interface gráfica ou web
-- Implementar integração contínua com GitHub Actions
+- Implementar uma interface gráfica ou web
+- Introduzir integração contínua com GitHub Actions
 
 ## Autor
 
-Graduado em Ciência da Computação e estudante de Inteligência Artificial, em transição profissional para desenvolvimento de software, com experiência anterior em operações bancárias e gestão administrativa.
+Bacharel em Ciência da Computação e estudante de Inteligência Artificial em transição para o desenvolvimento de software, com experiência profissional em operações bancárias e gestão administrativa.
