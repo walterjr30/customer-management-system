@@ -91,8 +91,10 @@ def add_customer():
     name = input("Enter name: ").strip()
     email = normalize_email(input("Enter email: "))
     city = input("Enter city: ").strip()
-    if not validate_customer(name, email, city):
-        print("All fields are required")
+    errors = validate_customer(name, email, city)
+    if errors:
+        for error in errors:
+            print(error)
         return
     if find_customer_by_email(email) is not None:
         print("Email already registered")
