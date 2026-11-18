@@ -58,22 +58,6 @@ def test_validate_city(city, expected):
     assert validate_city(city) is expected
 
 
-@pytest.mark.parametrize(
-    "name, email, city",
-    [
-        ("", "semnome@email.com", "uberlandia"),
-        ("Sememail", "", "Belo Horizonte"),
-        ("Sem cidade", "semcidade@email.com", ""),
-        ("    ", "ana@email.com", "Analandia"),
-    ],
-)
-def test_validate_customer_rejects_invalid(name, email, city):
-    assert validate_customer(name, email, city) is False
-
-
-def test_validate_customer_accepts_valid():
-    assert validate_customer("Walter", "walter@email.com", "Dublin") is True
-
 def test_validate_customer_return_empty_list_when_valid():
     assert validate_customer("Walter", "walter@email.com", "Dublin") == []
 
@@ -83,9 +67,10 @@ def test_validate_customer_return_empty_list_when_valid():
         ("", "teste@email.com", "Brasilia", "Name is required"),
         ("  ", "walter@email.com", "Dublin", "Name is required"),
         ("BBB", "  ", "Maragogi", "Email is required"),
-        ("CCC", "ccc@rmail.com", " ", "City is required" ),      
+        ("CCC","ccc@rmail.com", " ", "City is required"),      
     ],
     )
 
 def test_validate_customer_reports_missing_field(name, email, city, expected_error):    
     assert validate_customer(name, email, city) == [expected_error]
+

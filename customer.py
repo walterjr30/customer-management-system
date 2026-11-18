@@ -58,11 +58,15 @@ def normalize_city(city):
 
 
 def validate_customer(name, email, city):
-    name = normalize_name(name)
-    email = normalize_email(email)
-    city = normalize_city(city)
-    return all([name, email, city])
-
+    errors = []
+    if not normalize_name(name):
+        errors.append("Name is required")
+    if not normalize_email(email):
+        errors.append("Email is required")
+    if not normalize_city(city):
+        errors.append("City is required")
+    return errors
+    
 
 def validate_city(city):
     return bool(city.strip())
