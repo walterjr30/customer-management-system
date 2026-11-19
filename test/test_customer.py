@@ -6,6 +6,7 @@ from customer import (
     normalize_name,
     validate_city,
     validate_customer,
+    is_valid_email_format
 )
 
 
@@ -74,3 +75,15 @@ def test_validate_customer_return_empty_list_when_valid():
 def test_validate_customer_reports_missing_field(name, email, city, expected_error):    
     assert validate_customer(name, email, city) == [expected_error]
 
+@pytest.mark.parametrize(
+    "email",
+    ["abc", "abc@", "@email.com", "abc@email", "a b@email.com"],
+
+)
+
+def test_validate_customer_reports_invalid_email_format(email):
+    assert validate_customer("Walter", email, "Dublin") == ["Email is invalid"]
+
+@pytest.mark.parametrize("email", ["abc@.com", "abc@email."])
+def test_is_valid_email_format_rejects_dots_at_domain_edges(email):
+    assert is_valid_email_format(email) is False
