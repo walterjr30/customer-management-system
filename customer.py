@@ -56,6 +56,7 @@ def normalize_name(name):
 def normalize_city(city):
     return city.strip()
 
+
 def is_valid_email_format(email):
     if " " in email or email.count("@") != 1:
         return False
@@ -65,6 +66,7 @@ def is_valid_email_format(email):
     if "." not in domain.strip("."):
         return False
     return True
+
 
 def validate_customer(name, email, city):
     errors = []
@@ -81,7 +83,7 @@ def validate_customer(name, email, city):
     if not normalize_city(city):
         errors.append("City is required")
     return errors
-    
+
 
 def validate_city(city):
     return bool(city.strip())
