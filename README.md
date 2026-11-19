@@ -1,4 +1,5 @@
 # Customer Management System
+![Tests](https://github.com/walterjr30/customer-management-system/actions/workflows/tests.yml/badge.svg)
 
 [English](README.md) | [Português](README.pt-BR.md)
 

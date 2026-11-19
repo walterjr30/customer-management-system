@@ -1,4 +1,5 @@
 # Sistema de Gerenciamento de Clientes
+![Tests](https://github.com/walterjr30/customer-management-system/actions/workflows/tests.yml/badge.svg)
 
 [English](README.md) | [Português](README.pt-BR.md)
 
@@ -25,6 +26,7 @@ Este projeto faz parte da minha transição profissional para o desenvolvimento 
 - Impedir cadastros com e-mail duplicado
 - Armazenar dados de forma persistente com SQLite
 - Executar testes automatizados com Pytest
+- GitHub Actions: automated tests on every push.
 
 ## Tecnologias
 
@@ -156,7 +158,7 @@ ruff check .
 - Adicionar type hints e docstrings
 - Desenvolver uma API REST com FastAPI ou Flask
 - Implementar uma interface gráfica ou web
-- Introduzir integração contínua com GitHub Actions
+
 
 ## Autor
 
