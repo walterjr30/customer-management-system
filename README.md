@@ -26,6 +26,7 @@ This project is part of my professional transition into software development.
 - Prevent duplicate email registrations
 - Store data persistently using SQLite
 - Run automated tests with Pytest
+- GitHub Actions: automated tests on every push.
 
 ## Technologies
 
@@ -155,7 +156,7 @@ ruff check .
 - Add type hints and docstrings
 - Develop a REST API using FastAPI or Flask
 - Implement a graphical or web interface
-- Introduce continuous integration with GitHub Actions
+
 
 ## Author
 

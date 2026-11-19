@@ -1,63 +1,19 @@
-def create_customer(name, email, city):
-    email = normalize_email(email)
-    customer = {"name": name, "email": email, "city": city}
-
-    return customer
-
-
-def add_customer(customers, customer):
-    customers.append(customer)
-
-
-def list_customers(customers):
-    for customer in customers:
-        print("Name: ", customer["name"])
-        print("Email: ", customer["email"])
-        print("City: ", customer["city"])
-        print()
-
-
-def find_customer(customers, search_email):
-    search_email = normalize_email(search_email)
-    for customer in customers:
-        if customer["email"] == search_email:
-            return customer
-
-    return None
-
-
-def update_customer(customers, email, new_city):
-    customer = find_customer(customers, email)
-
-    if customer is not None:
-        customer["city"] = new_city
-        return True
-
-    return False
-
-
-def delete_customer(customers, email):
-    customer = find_customer(customers, email)
-    if customer is not None:
-        customers.remove(customer)
-        return True
-
-    return False
-
-
-def normalize_email(email):
+def normalize_email(email: str) -> str:
     return email.strip().lower()
 
 
-def normalize_name(name):
+def normalize_name(name: str) -> str:
     return name.strip()
 
 
-def normalize_city(city):
+def normalize_city(city: str) -> str:
     return city.strip()
 
 
-def is_valid_email_format(email):
+def is_valid_email_format(email: str) -> bool:
+    """
+    Return True if the email has one @, text on both sides and a dotted domain.
+    """
     if " " in email or email.count("@") != 1:
         return False
     local, domain = email.split("@")
@@ -68,7 +24,10 @@ def is_valid_email_format(email):
     return True
 
 
-def validate_customer(name, email, city):
+def validate_customer(name: str, email: str, city: str) -> list[str]:
+    """
+    Return a list of error messages. An empty list means valid data.
+    """
     errors = []
     name = normalize_name(name)
     email = normalize_email(email)
@@ -85,5 +44,8 @@ def validate_customer(name, email, city):
     return errors
 
 
-def validate_city(city):
+def validate_city(city: str) -> str:
+    """
+    return city valid
+    """
     return bool(city.strip())
